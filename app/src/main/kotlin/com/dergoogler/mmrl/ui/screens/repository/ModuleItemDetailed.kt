@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
@@ -29,6 +31,7 @@ import com.dergoogler.mmrl.ui.component.Cover
 import com.dergoogler.mmrl.ui.component.LabelItem
 import com.dergoogler.mmrl.ui.component.LabelItemDefaults
 import com.dergoogler.mmrl.ui.component.card.Card
+import com.dergoogler.mmrl.ui.component.text.BBCodeText
 import com.dergoogler.mmrl.ui.component.text.IconText
 import com.dergoogler.mmrl.ui.providable.LocalOnlineModule
 import com.dergoogler.mmrl.ui.providable.LocalOnlineModuleState
@@ -136,15 +139,19 @@ fun ModuleItemDetailed(
                     )
 
                     if (menu.showUpdatedTime) {
-                        Text(
-                            text =
-                                stringResource(
-                                    id = R.string.module_update_at,
-                                    state.lastUpdated.toFormattedDateSafely,
-                                ),
+                        BBCodeText(
                             style = MaterialTheme.typography.bodySmall,
                             textDecoration = decoration,
                             color = MaterialTheme.colorScheme.outline,
+                            text = state.lastUpdated.toFormattedDateSafely + if (module.stars != null && menu.showStars) " • [icon=star] ${module.stars}" else "",
+                            iconContent = {
+                                if (it == "star") {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.star),
+                                        contentDescription = null,
+                                    )
+                                }
+                            }
                         )
                     }
                 }
