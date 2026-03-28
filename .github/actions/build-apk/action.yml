@@ -68,8 +68,8 @@ runs:
       shell: bash
       run: |
         if [ -n "${{ inputs.username }}" ]; then
-            echo gpr.user='${{ inputs.username }}' >> gradle.properties
-            echo gpr.key='${{ inputs.token }}' >> gradle.properties
+            echo \ngpr.user='${{ inputs.username }}'\n >> gradle.properties
+            echo \ngpr.key='${{ inputs.token }}'\n >> gradle.properties
         fi
 
     - name: Set up JDK
