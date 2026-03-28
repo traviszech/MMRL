@@ -69,8 +69,8 @@ runs:
       run: |
         [ -f gradle.properties ] && [ "$(tail -c1 gradle.properties)" != "" ] && echo >> gradle.properties
         {
-          echo "gpr.user='${{ inputs.username }}'"
-          echo "gpr.key='${{ inputs.token }}'"
+          echo "gpr.user=${{ inputs.username }}"
+          echo "gpr.key=${{ inputs.token }}"
         } >> gradle.properties
 
     - name: Set up JDK
