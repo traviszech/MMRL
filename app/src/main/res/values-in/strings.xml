@@ -92,7 +92,7 @@
     <string name="settings_changelo_desc">Semua perubahan terkini dalam MMRL</string>
     <string name="menu_sort_repolistmode_compact">Susun Rapat</string>
     <string name="settings_open_notification_settings">Buka Setelan Notifikasi</string>
-    <string name="settings_reboot_protection">Proteksi Reboot</string>
+    <string name="settings_reboot_protection">Perlindungan Mulai Ulang</string>
     <string name="settings_homepage_desc">Pilih halaman awal aplikasi</string>
     <string name="additional_notes">Catatan Tambahan</string>
     <string name="repo_update_service_failed">Tidak ada pembaruan yang ditemukan untuk repositori</string>
@@ -102,7 +102,7 @@
     <string name="selinux_status">Status SELinux</string>
     <string name="selinux_status_disabled">Dinonaktifkan</string>
     <string name="selinux_status_permissive">Permisif</string>
-    <string name="reboot_bootloader">Reboot ke Bootloader</string>
+    <string name="reboot_bootloader">Mulai ulang ke Bootloader</string>
     <string name="action_executing">Menjalankan…</string>
     <string name="bulk_install_module_already_added">Modul sudah ditambahkan</string>
     <string name="bulk_add_as_bulk">Tambahkan sebagai Massal</string>
@@ -140,7 +140,7 @@
     <string name="settings_appearance_desc">Ubah aplikasi sesuai kebutuhan Anda</string>
     <string name="settings_other">Lainnya</string>
     <string name="settings_other_desc">DoH, lokasi unduhan, dan lainnya</string>
-    <string name="settings_reboot_protection_desc">Jika diaktifkan, kamu harus mengkonfirmasi setiap reboot</string>
+    <string name="settings_reboot_protection_desc">Jika diaktifkan, Anda harus mengkonfirmasi setiap memulai ulang</string>
     <string name="settings_blacklist">Daftar Hitam</string>
     <string name="settings_date_pattern">Pola tanggal</string>
     <string name="settings_date_pattern_desc">Gunakan format tanggal Anda sendiri</string>
@@ -167,11 +167,11 @@
     <string name="menu_show_antifeatures">Tampilkan Anti-Fitur</string>
     <string name="repo_added">Repo ditambahkan</string>
     <string name="selinux_status_unknown">Tak diketahui</string>
-    <string name="reboot">Reboot</string>
+    <string name="reboot">Mulai ulang</string>
     <string name="home_support_title">Dukung Saya</string>
-    <string name="reboot_edl">Reboot ke EDL</string>
+    <string name="reboot_edl">Mulai ulang ke EDL</string>
     <string name="home_support_content">MMRL adalah, dan akan selalu, gratis dan open source. Namun Anda dapat menunjukkan kepada saya bahwa Anda peduli dengan memberikan donasi.</string>
-    <string name="reboot_download">Reboot ke Download</string>
+    <string name="reboot_download">Mulai ulang ke Download</string>
     <string name="home_installed_modules">Modul Terpasang</string>
     <string name="home_enabled_modules">Modul yang Diaktifkan</string>
     <string name="home_updated_modules">Modul yang Diperbarui</string>
@@ -184,8 +184,8 @@
     <string name="unsafe_url_redirecting">URL tidak aman: %1$s. Mengarahkan…</string>
     <string name="hidden">Tersembunyi</string>
     <string name="new_version_available">Versi baru [italic]%s[/italic] telah tersedia, klik untuk memperbaharui.</string>
-    <string name="install_screen_reboot_title">Reboot?</string>
-    <string name="install_screen_reboot_text">Kamu yakin ingin reboot perangkatmu?</string>
+    <string name="install_screen_reboot_title">Mulai ulang?</string>
+    <string name="install_screen_reboot_text">Apakah Anda yakin ingin memulai ulang perangkat?</string>
     <string name="page_home">Halaman</string>
     <string name="install_screen_reboot_confirm">Ya</string>
     <string name="install_screen_reboot_dismiss">Tidak</string>
@@ -219,11 +219,11 @@
     <string name="stack_trace_truncated">%s\n… %d lihat selengkapnya</string>
     <string name="report_to_issues">Laporkan ke issue</string>
     <string name="we_hit_a_brick_crash">Ada yang salah ~</string>
-    <string name="reboot_userspace">Reboot secara halus</string>
-    <string name="reboot_recovery">Reboot ke Recovery</string>
+    <string name="reboot_userspace">Mulai ulang secara halus</string>
+    <string name="reboot_recovery">Mulai ulang ke Recovery</string>
     <string name="selinux_status_enforcing">Enforcing</string>
     <string name="view_module_features_action">Aksi</string>
-    <string name="view_module_features_service_sub">Menjalankan kode saat boot (setelah sistem diinisialisasi).</string>
+    <string name="view_module_features_service_sub">Menjalankan kode saat proses boot (setelah sistem diinisialisasi).</string>
     <string name="view_module_section_count">+%1$s</string>
     <string name="settings_text_wrap">Bungkus Teks</string>
     <string name="settings_changelog">Catatan Perubahan</string>
@@ -241,7 +241,7 @@
     <string name="view_module_features_apks">APK</string>
     <string name="view_module_features_webui">WebUI</string>
     <string name="view_module_features_post_mount">Post Mount</string>
-    <string name="view_module_features_boot_completed">Proses booting selesai</string>
+    <string name="view_module_features_boot_completed">Boot selesai</string>
     <string name="view_module_install_confirm_confirm_deps">Pasang (deps)</string>
     <string name="view_module_install_confirm_confirm">Pasang</string>
     <string name="settings_resources_desc">Dokumentasi, Repo yang Didukung, dan lainnya</string>
@@ -355,7 +355,7 @@
     <string name="settings_strict_mode">Mode Ketat</string>
     <string name="shortcut_not_supported">Pintasan tidak didukung di perangkat atau peluncur Anda</string>
     <string name="settings_enable_toolbar_events">Aktifkan Event Toolbar</string>
-    <string name="unable_to_perform_reboot_task">Tidak dapat melakukan reboot</string>
+    <string name="unable_to_perform_reboot_task">Tidak dapat melakukan mulai ulang</string>
     <string name="drawer_legal">Legal</string>
     <string name="drawer_tools">Peralatan</string>
     <string name="drawer_support">Dukungan</string>
