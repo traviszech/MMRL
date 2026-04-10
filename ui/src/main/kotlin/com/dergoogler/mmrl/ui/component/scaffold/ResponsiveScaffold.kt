@@ -6,7 +6,6 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.contentColorFor
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +40,8 @@ fun ResponsiveScaffold(
         contentWindowInsets = contentWindowInsets,
         floatingActionButton = floatingActionButton,
         railBar = {
-            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Medium) railBar()
+// TODO: see above
+            // if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Medium) railBar()
         },
         containerColor = containerColor,
         contentColor = contentColor,

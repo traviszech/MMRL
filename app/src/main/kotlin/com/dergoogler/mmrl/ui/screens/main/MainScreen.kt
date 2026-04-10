@@ -69,7 +69,7 @@ import dev.chrisbanes.haze.rememberHazeState
 @Destination<RootGraph>
 @Composable
 fun MainScreen() {
-    val width = currentScreenWidth()
+//    val width = currentScreenWidth()
     val userPrefs = LocalUserPreferences.current
     val navigator = LocalDestinationsNavigator.current
     val context = LocalContext.current
@@ -89,7 +89,7 @@ fun MainScreen() {
         LocalSnackbarHost provides snackbarHostState,
         LocalBulkInstall provides bulkInstallViewModel,
     ) {
-        if (width.isLarge) {
+        /*if (width.isLarge) {
             Scaffold(
                 contentWindowInsets = WindowInsets.none,
             ) { paddingValues ->
@@ -160,14 +160,14 @@ fun MainScreen() {
             }
 
             return@CompositionLocalProvider
-        }
+        }*/
 
         ResponsiveScaffold(
             bottomBar = {
                 BottomNav(updates)
             },
             railBar = {
-                RailNav(updates)
+//                RailNav(updates)
             },
             contentWindowInsets = WindowInsets.none,
         ) { paddingValues ->
@@ -243,7 +243,7 @@ private fun BottomNav(updates: Int) {
         }
     }
 }
-
+/*
 @Composable
 private fun RailNav(updates: Int) {
     val prefs = LocalUserPreferences.current
@@ -287,7 +287,7 @@ private fun RailNav(updates: Int) {
             )
         }
     }
-}
+}*/
 
 @Composable
 private fun BaseNavIcon(
