@@ -6,6 +6,7 @@ import android.util.Log
 import com.dergoogler.mmrl.ext.nullable
 import com.dergoogler.mmrl.ext.toMap
 import com.dergoogler.mmrl.platform.file.SuFile
+import com.dergoogler.mmrl.platform.file.writeText
 import com.dergoogler.mmrl.platform.model.ModId
 import com.dergoogler.mmrl.platform.util.moshi
 import com.squareup.moshi.Json
@@ -267,7 +268,7 @@ abstract class ConfigFile<T> : IConfig<T> {
 
                 // Write updated override file
                 targetFile.writeText(
-                    data = mapAdapter.indent("  ").toJson(existingMap),
+                    text = mapAdapter.indent("  ").toJson(existingMap),
                 )
 
                 // Load the new configuration and update cache

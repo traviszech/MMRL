@@ -6,11 +6,7 @@ import android.os.RemoteException
 import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
-import android.system.OsConstants.O_APPEND
-import android.system.OsConstants.O_CREAT
 import android.system.OsConstants.O_RDONLY
-import android.system.OsConstants.O_TRUNC
-import android.system.OsConstants.O_WRONLY
 import android.util.LruCache
 import com.dergoogler.mmrl.platform.content.ParcelResult
 import com.dergoogler.mmrl.platform.stub.IFileManager
@@ -152,10 +148,15 @@ class FileManager : IFileManager.Stub() {
 
     override fun openReadStream(
         path: String,
+        flags: Int,
+        mode: Int,
         fd: ParcelFileDescriptor,
     ): ParcelResult {
         val f = OpenFile()
         try {
+            // val flags = O_RDONLY
+            // val mode = 0
+
             f.fd = Os.open(path, O_RDONLY, 0)
             streamPool.execute {
                 runCatching {
@@ -174,13 +175,16 @@ class FileManager : IFileManager.Stub() {
 
     override fun openWriteStream(
         path: String,
+        flags: Int,
+        mode: Int,
         fd: ParcelFileDescriptor,
-        append: Boolean,
     ): ParcelResult {
         val f = OpenFile()
         try {
-            val mode = O_CREAT or O_WRONLY or (if (append) O_APPEND else O_TRUNC)
-            f.fd = Os.open(path, mode, 438)
+            // val flags = O_CREAT or O_WRONLY or (if (append) O_APPEND else O_TRUNC)
+            // val mode = 438
+
+            f.fd = Os.open(path, mode, mode)
             streamPool.execute {
                 runCatching {
                     f.use { of ->

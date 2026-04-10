@@ -5,12 +5,6 @@ import android.os.RemoteException
 import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
-import android.system.OsConstants.O_APPEND
-import android.system.OsConstants.O_CREAT
-import android.system.OsConstants.O_RDONLY
-import android.system.OsConstants.O_TRUNC
-import android.system.OsConstants.O_WRONLY
-import androidx.annotation.UiThread
 import com.dergoogler.mmrl.platform.content.ParcelResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -156,14 +150,18 @@ open class ExtFile(
 
     private val extFileStreamPool: ExecutorService = Executors.newCachedThreadPool()
 
-    @UiThread
-    protected fun openReadStream(
+    internal fun openReadStream(
         path: String,
+        flags: Int,
+        mode: Int,
         fd: ParcelFileDescriptor,
     ): ParcelResult {
         val f = OpenFile()
         return try {
-            f.fd = Os.open(path, O_RDONLY, 0)
+            // val flags = O_RDONLY
+            // val mode = 0
+
+            f.fd = Os.open(path, flags, mode)
             f.use { of ->
                 of.write = FileUtils.createFileDescriptor(fd.detachFd())
                 while (of.pread(SuFile.PIPE_CAPACITY, -1) > 0);
@@ -175,15 +173,18 @@ open class ExtFile(
         }
     }
 
-    protected fun openWriteStream(
+    internal fun openWriteStream(
         path: String,
+        flags: Int,
+        mode: Int,
         fd: ParcelFileDescriptor,
-        append: Boolean,
     ): ParcelResult {
         val f = OpenFile()
         try {
-            val mode = O_CREAT or O_WRONLY or (if (append) O_APPEND else O_TRUNC)
-            f.fd = Os.open(path, mode, 438)
+            // val flags = O_CREAT or O_WRONLY or (if (append) O_APPEND else O_TRUNC)
+            // val mode = 438
+
+            f.fd = Os.open(path, flags, mode)
             extFileStreamPool.execute {
                 runCatching {
                     f.use { of ->

@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "FunctionName")
 
 package com.dergoogler.mmrl.platform.file
 
@@ -7,8 +7,11 @@ import android.os.ParcelFileDescriptor
 import android.os.RemoteException
 import android.system.ErrnoException
 import android.system.Os
-import android.util.Log
-import com.dergoogler.mmrl.ext.isNotNullOrBlank
+import android.system.OsConstants.O_APPEND
+import android.system.OsConstants.O_CREAT
+import android.system.OsConstants.O_RDONLY
+import android.system.OsConstants.O_TRUNC
+import android.system.OsConstants.O_WRONLY
 import com.dergoogler.mmrl.platform.Platform
 import com.dergoogler.mmrl.platform.PlatformManager
 import com.dergoogler.mmrl.platform.stub.IFileManager
@@ -19,8 +22,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
 import java.util.Locale
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -48,30 +49,11 @@ import kotlin.contracts.contract
  *
  * @see java.io.File
  * @see ExtFile
- * @see com.dergoogler.mmrl.platform.Platform.fileManagerOrNull
  * @see com.dergoogler.mmrl.platform.stub.IFileManager
  */
 class SuFile(
     vararg paths: Any,
 ) : ExtFile(*paths) {
-    fun readText(): String {
-        try {
-            val bytes = newInputStream().use { it.readBytes() }
-            val data = ByteBuffer.wrap(bytes)
-            val content = StandardCharsets.UTF_8.decode(data).toString()
-
-            if (content.isNotNullOrBlank()) {
-                return content
-            }
-
-            return readText(Charsets.UTF_8)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error reading text file: ${e.message}")
-            e.printStackTrace()
-            return readText(Charsets.UTF_8)
-        }
-    }
-
     fun fromPaths(vararg paths: Any): SuFile? {
         val files = paths.map { SuFile(path, it) }
         for (f in files) {
@@ -82,12 +64,6 @@ class SuFile(
 
         return null
     }
-
-    fun readBytes(): ByteArray = newInputStream().use { it.readBytes() }
-
-    fun writeText(data: String) = newOutputStream(false).use { it.write(data.toByteArray()) }
-
-    fun writeBytes(data: ByteArray) = newOutputStream(false).use { it.write(data) }
 
     override fun list(): Array<String>? =
         fallback(
@@ -246,9 +222,11 @@ class SuFile(
             ),
         )
 
-    override fun setExecutable(executable: Boolean): Boolean = setPermissions(SuFilePermissions.PERMISSION_755)
+    override fun setExecutable(executable: Boolean): Boolean =
+        setPermissions(SuFilePermissions.PERMISSION_755)
 
-    fun setPermissions(permissions: SuFilePermissions): Boolean = this.setPermissions(permissions.value)
+    fun setPermissions(permissions: SuFilePermissions): Boolean =
+        this.setPermissions(permissions.value)
 
     fun setPermissions(permissions: Int): Boolean =
         fallback(
@@ -300,13 +278,57 @@ class SuFile(
         return files.toArray(arrayOfNulls<SuFile>(files.size))
     }
 
+    // I/O helpers
+    /**
+     * @hide
+     */
+    @Throws(IOException::class, RemoteException::class)
+    internal fun __open_read_stream__(
+        pfd: ParcelFileDescriptor,
+        flags: Int,
+        mode: Int,
+    ) {
+        fallback(
+            root = {
+                this.openReadStream(path, flags, mode, pfd).checkException()
+            },
+            nonRoot = {
+                this.openReadStream(path, flags, mode, pfd).checkException()
+            }
+        )
+
+    }
+
+    /**
+     * @hide
+     */
+    @Throws(IOException::class, RemoteException::class)
+    internal fun __open_write_stream__(
+        pfd: ParcelFileDescriptor,
+        flags: Int,
+        mode: Int,
+    ) {
+        fallback(
+            root = {
+                this.openWriteStream(path, flags, mode, pfd).checkException()
+            },
+            nonRoot = {
+                this.openWriteStream(path, flags, mode, pfd).checkException()
+            }
+        )
+    }
+
+    @Deprecated("Use SuFileInputStream instead")
     @Throws(IOException::class)
     fun newInputStream(): InputStream =
+        // TODO: keep for compatibility
         fallback(
             {
+                val flags = O_RDONLY
+                val mode = 0
                 val pipe = ParcelFileDescriptor.createPipe()
                 try {
-                    this.openReadStream(path, pipe[1]).checkException()
+                    this.openReadStream(path, flags, mode, pipe[1]).checkException()
                 } catch (e: RemoteException) {
                     pipe[0].close()
                     throw IOException(e)
@@ -321,13 +343,17 @@ class SuFile(
             },
         )
 
+    @Deprecated("Use SuFileOutputStream instead")
     @Throws(IOException::class)
     fun newOutputStream(append: Boolean): OutputStream =
+        // TODO: keep for compatibility
         fallback(
             {
+                val flags = O_CREAT or O_WRONLY or (if (append) O_APPEND else O_TRUNC)
+                val mode = 438
                 val pipe = ParcelFileDescriptor.createPipe()
                 try {
-                    this.openWriteStream(path, pipe[0], append).checkException()
+                    this.openWriteStream(path, flags, mode, pipe[0]).checkException()
                 } catch (e: RemoteException) {
                     pipe[1].close()
                     throw IOException(e)
@@ -371,6 +397,21 @@ class SuFile(
     companion object {
         const val TAG = "SuFile"
         const val PIPE_CAPACITY = 16 * 4096
+
+        /**
+         * Returns the default buffer size when working with buffered streams.
+         */
+        const val DEFAULT_BUFFER_SIZE: Int = 8 * 1024
+
+        /**
+         * Returns the default block size for forEachBlock().
+         */
+        const val DEFAULT_BLOCK_SIZE: Int = 4096
+
+        /**
+         * Returns the minimum block size for forEachBlock().
+         */
+        const val MINIMUM_BLOCK_SIZE: Int = 512
 
         fun loadSharedObjects(vararg paths: String): Boolean =
             fallback(

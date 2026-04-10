@@ -3,6 +3,7 @@ package com.dergoogler.mmrl.platform.file
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.ParcelFileDescriptor
+import android.os.RemoteException
 import android.system.ErrnoException
 import android.system.Int64Ref
 import android.system.Os
@@ -217,6 +218,35 @@ internal object FileUtils {
         } catch (e: ReflectiveOperationException) {
             return null
         }
+    }
+
+    @Throws(IOException::class)
+    fun openReadPipe(file: SuFile, flags: Int, mode: Int): ParcelFileDescriptor {
+        val pipe = ParcelFileDescriptor.createPipe()
+        try {
+            file.__open_read_stream__(pipe[1], flags, mode)
+        } catch (e: RemoteException) {
+            pipe[0].close()
+            throw IOException(e)
+        } finally {
+            pipe[1].close()
+        }
+        return pipe[0]
+    }
+
+    @Throws(IOException::class)
+    fun openWritePipe(file: SuFile, flags: Int, mode: Int): ParcelFileDescriptor {
+        val pipe = ParcelFileDescriptor.createPipe()
+        try {
+            file.__open_write_stream__(pipe[0], flags, mode)
+        } catch (e: RemoteException) {
+            pipe[1].close()
+            throw IOException(e)
+        } finally {
+            pipe[0].close()
+        }
+
+        return pipe[1]
     }
 
     internal class Flag {
