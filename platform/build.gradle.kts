@@ -12,6 +12,10 @@ android {
     namespace = "com.dergoogler.mmrl.platform"
     compileSdk = 36
 
+    publishing {
+        singleVariant("release")
+    }
+
     defaultConfig {
         minSdk = 26
 
